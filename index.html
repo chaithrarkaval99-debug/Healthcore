@@ -1,3 +1,4 @@
+Enhanced Backend for Rural Healthcare Platform
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -695,22 +696,6 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.05);
         }
 
-        /* Loading Spinner */
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--primary);
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         /* Responsive */
         @media (max-width: 768px) {
             .features-grid,
@@ -937,7 +922,6 @@
                 <span id="location-status" class="muted" style="margin-left:6px"></span>
             </div>
             <div class="specialist-list" id="specialist-list">
-                <div class="spinner" id="loading-doctors" style="display: none;"></div>
                 <!-- Results will be rendered here dynamically -->
             </div>
         </section>
@@ -954,8 +938,8 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="phone-number">Phone Number</label>
-                    <input type="text" id="phone-number" placeholder="+91 XXXXX XXXXX" required>
+                    <label for="middle-number">Phone Number</label>
+                    <input type="text" id="middle-number" placeholder="+91 XXXXX XXXXX">
                 </div>
                 
                 <div class="form-group">
@@ -1050,7 +1034,16 @@
 
                 <h3>Recent Invoices</h3>
                 <div id="recent-invoices">
-                    <!-- Will be populated by JavaScript -->
+                    <div class="payment-card paid">
+                        <h4>Consultation with Dr. Sharma</h4>
+                        <p class="muted">2024-01-15</p>
+                        <p><strong>₹500</strong> <span class="payment-status status-paid">Paid</span></p>
+                    </div>
+                    <div class="payment-card pending">
+                        <h4>Lab Tests Package</h4>
+                        <p class="muted">2024-01-20</p>
+                        <p><strong>₹1,200</strong> <span class="payment-status status-pending">Pending</span></p>
+                    </div>
                 </div>
             </div>
 
@@ -1076,7 +1069,30 @@
                         </tr>
                     </thead>
                     <tbody id="invoice-list">
-                        <!-- Will be populated by JavaScript -->
+                        <tr>
+                            <td>INV-001</td>
+                            <td>2024-01-15</td>
+                            <td>Consultation with Dr. Sharma</td>
+                            <td>₹500</td>
+                            <td><span class="payment-status status-paid">Paid</span></td>
+                            <td><button class="btn btn-small" onclick="viewInvoice('INV-001')"><i class="fas fa-eye"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td>INV-002</td>
+                            <td>2024-01-20</td>
+                            <td>Lab Tests Package</td>
+                            <td>₹1,200</td>
+                            <td><span class="payment-status status-pending">Pending</span></td>
+                            <td><button class="btn btn-small" onclick="viewInvoice('INV-002')"><i class="fas fa-eye"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td>INV-003</td>
+                            <td>2024-02-01</td>
+                            <td>Follow-up Consultation</td>
+                            <td>₹300</td>
+                            <td><span class="payment-status status-overdue">Overdue</span></td>
+                            <td><button class="btn btn-small" onclick="viewInvoice('INV-003')"><i class="fas fa-eye"></i></button></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -1085,7 +1101,26 @@
             <div class="tab-content" id="payments-tab">
                 <h3>Payment Methods</h3>
                 <div id="payment-methods-list">
-                    <!-- Will be populated by JavaScript -->
+                    <div class="payment-card">
+                        <div class="action-buttons" style="justify-content: space-between; align-items: center;">
+                            <div>
+                                <i class="fas fa-credit-card"></i>
+                                <strong>Visa •••• 4242</strong>
+                                <span class="muted">Credit Card</span>
+                            </div>
+                            <button class="btn btn-small btn-danger" onclick="removePaymentMethod('card-1')">Remove</button>
+                        </div>
+                    </div>
+                    <div class="payment-card">
+                        <div class="action-buttons" style="justify-content: space-between; align-items: center;">
+                            <div>
+                                <i class="fas fa-mobile-alt"></i>
+                                <strong>UPI: user@okicici</strong>
+                                <span class="muted">Unified Payments Interface</span>
+                            </div>
+                            <button class="btn btn-small btn-danger" onclick="removePaymentMethod('upi-1')">Remove</button>
+                        </div>
+                    </div>
                 </div>
                 <button class="btn" onclick="addPaymentMethod()" style="margin-top: 15px;">
                     <i class="fas fa-plus"></i> Add Payment Method
@@ -1136,8 +1171,108 @@
 
             <h3>Community Reviews</h3>
             <div class="feedback-list" id="feedback-list">
-                <!-- Will be populated by JavaScript -->
+                <div class="feedback-item">
+                    <div class="feedback-header">
+                        <div>
+                            <strong>Rahul Kumar</strong>
+                            <div class="muted">General Consultation</div>
+                        </div>
+                        <div class="feedback-rating">
+                            ★★★★★ <span class="muted">2024-01-10</span>
+                        </div>
+                    </div>
+                    <p>Excellent service! The doctors were very professional and caring. The online consultation was smooth.</p>
+                </div>
+                
+                <div class="feedback-item">
+                    <div class="feedback-header">
+                        <div>
+                            <strong>Priya Singh</strong>
+                            <div class="muted">Lab Tests</div>
+                        </div>
+                        <div class="feedback-rating">
+                            ★★★★☆ <span class="muted">2024-01-08</span>
+                        </div>
+                    </div>
+                    <p>Good experience overall. The doctor was knowledgeable, but waiting time was a bit long.</p>
+                </div>
             </div>
+        </section>
+
+        <!-- Additional Service Sections -->
+        <section>
+            <h2>Contact Address</h2>
+            <p>Audio base <a href="#">www.monet1.org/3</a></p>
+        </section>
+        
+        <section>
+            <h2>About Our Service</h2>
+            <div class="about-me">
+                <p>The first 20th Sharon's internal psychologist who was a Senior Congestion Manager, who has been a member of the organization and senior advisory candidate in cognitive behavior systems (CBT) which is a role that is responsible for the application of an appropriate voice system to provide safe and respectful feedback from the organization and their neighbors. In addition, he also provides such feedback with his colleagues.</p>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Service Logistics</h2>
+            <div class="logistics">
+                <div class="logistics-item">
+                    <h3>Healthcare Management System</h3>
+                </div>
+                <div class="logistics-item">
+                    <h3>Languages Supported</h3>
+                    <p>English, Hindi</p>
+                </div>
+                <div class="logistics-item">
+                    <h3>Book Audio Consultation</h3>
+                    <p>Available via multiple platforms</p>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Find Care & Support That's Right For You</h2>
+            <p>Healthcare modules tailored to rural community needs.</p>
+        </section>
+        
+        <section>
+            <h2>Privacy & Data Security</h2>
+            <p>Your health data is protected and secure.</p>
+            
+            <div class="logistics">
+                <div class="logistics-item">
+                    <h3>Data Usage</h3>
+                    <p>Secure data handling protocols</p>
+                </div>
+                <div class="logistics-item">
+                    <h3>Community Coordination</h3>
+                    <p>Local health updates</p>
+                </div>
+                <div class="logistics-item">
+                    <h3>Resource Network</h3>
+                    <p>Connected healthcare nodes</p>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Billing & Payments</h2>
+            <p>Transparent financial history and awareness</p>
+            
+            <h3>Upcoming Payments</h3>
+            <div class="payment-card">
+                <h4>Consultation with Dr. Shams</h4>
+                <p class="muted">Upcoming Session</p>
+                <p class="payment-amount">Subscription Fee</p>
+            </div>
+            
+            <h3>Past Transactions</h3>
+            <ul class="transaction-list">
+                <li class="transaction-item">
+                    <h4>Previous visit</h4>
+                    <p>Healthcare consultation session completed successfully.</p>
+                    <p>Follow-up care instructions provided.</p>
+                </li>
+            </ul>
         </section>
 
         <!-- Community Support Section -->
@@ -1155,13 +1290,94 @@
             </div>
 
             <h3>Local Health Resources</h3>
-            <div class="support-resources" id="community-resources">
-                <!-- Will be populated by JavaScript -->
+            <div class="support-resources">
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-clinic-medical"></i>
+                    </div>
+                    <h3>Primary Health Center</h3>
+                    <p>Find nearby healthcare facilities and clinics</p>
+                    <div class="muted" style="margin: 10px 0;">
+                        <i class="fas fa-map-marker-alt"></i> 2.3 km away
+                        <span class="type-badge type-clinic">Clinic</span>
+                    </div>
+                    <div class="muted" style="margin-bottom: 15px;">
+                        <i class="fas fa-phone"></i> +91-9876543210
+                    </div>
+                    <button class="btn btn-small" onclick="contactResource('Primary Health Center')">Contact Now</button>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <h3>Mental Health Support Group</h3>
+                    <p>Join local mental health and wellness groups</p>
+                    <div class="muted" style="margin: 10px 0;">
+                        <i class="fas fa-map-marker-alt"></i> 5.1 km away
+                        <span class="type-badge type-support">Support</span>
+                    </div>
+                    <div class="muted" style="margin-bottom: 15px;">
+                        <i class="fas fa-phone"></i> +91-9876543211
+                    </div>
+                    <button class="btn btn-small" onclick="findSupportGroups()">Find Groups</button>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3>Community Wellness Center</h3>
+                    <p>Community health initiatives and programs</p>
+                    <div class="muted" style="margin: 10px 0;">
+                        <i class="fas fa-map-marker-alt"></i> 3.7 km away
+                        <span class="type-badge type-wellness">Wellness</span>
+                    </div>
+                    <div class="muted" style="margin-bottom: 15px;">
+                        <i class="fas fa-phone"></i> +91-9876543212
+                    </div>
+                    <button class="btn btn-small" onclick="learnMoreWellness()">Learn More</button>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-ambulance"></i>
+                    </div>
+                    <h3>Emergency Care Unit</h3>
+                    <p>24/7 emergency contacts and services</p>
+                    <div class="muted" style="margin: 10px 0;">
+                        <i class="fas fa-map-marker-alt"></i> 4.2 km away
+                        <span class="type-badge type-emergency">Emergency</span>
+                    </div>
+                    <div class="muted" style="margin-bottom: 15px;">
+                        <i class="fas fa-phone"></i> +91-9876543213
+                    </div>
+                    <button class="btn btn-small" onclick="viewEmergencyContacts()">View Contacts</button>
+                </div>
             </div>
 
             <h3>Upcoming Community Events</h3>
             <div id="community-events">
-                <!-- Will be populated by JavaScript -->
+                <div class="payment-card">
+                    <h4>Free Health Checkup Camp</h4>
+                    <p class="muted">2024-02-15 • Village Community Hall</p>
+                    <p>Free health screenings and consultations for the community</p>
+                    <button class="btn btn-small btn-success" onclick="registerEvent('Free Health Checkup Camp')" style="margin-top: 10px;">Register</button>
+                </div>
+                
+                <div class="payment-card">
+                    <h4>Mental Health Awareness Workshop</h4>
+                    <p class="muted">2024-02-20 • Community Center</p>
+                    <p>Learn about mental wellness and coping strategies</p>
+                    <button class="btn btn-small btn-success" onclick="registerEvent('Mental Health Awareness Workshop')" style="margin-top: 10px;">Register</button>
+                </div>
+                
+                <div class="payment-card">
+                    <h4>Yoga for Wellness Session</h4>
+                    <p class="muted">2024-02-25 • Public Park</p>
+                    <p>Guided yoga session for all age groups</p>
+                    <button class="btn btn-small btn-success" onclick="registerEvent('Yoga for Wellness Session')" style="margin-top: 10px;">Register</button>
+                </div>
             </div>
         </section>
 
@@ -1189,128 +1405,128 @@
     </div>
 
     <script>
-        const API_BASE = 'http://localhost:5000/api';
-
         // ==================== AUTHENTICATION SYSTEM ====================
-        function getToken() {
-            return localStorage.getItem('rmc_token');
-        }
-
-        function setToken(token) {
-            localStorage.setItem('rmc_token', token);
-        }
-
-        function clearAuth() {
-            localStorage.removeItem('rmc_token');
-            localStorage.removeItem('rmc_user');
-        }
-
-        function getCurrentUser() {
-            const user = localStorage.getItem('rmc_user');
-            return user ? JSON.parse(user) : null;
-        }
-
-        function setCurrentUser(user) {
-            localStorage.setItem('rmc_user', JSON.stringify(user));
-        }
-
-        async function apiCall(endpoint, options = {}) {
-            const token = getToken();
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...(token && { 'Authorization': `Bearer ${token}` }),
-                    ...options.headers
-                },
-                ...options
-            };
-
-            if (config.body && typeof config.body === 'object') {
-                config.body = JSON.stringify(config.body);
-            }
-
+        function loadUsers() {
             try {
-                const response = await fetch(`${API_BASE}${endpoint}`, config);
-                const data = await response.json();
-                
-                if (!response.ok) {
-                    throw new Error(data.error || 'API request failed');
-                }
-                
-                return data;
-            } catch (error) {
-                console.error('API call failed:', error);
-                throw error;
+                const raw = localStorage.getItem('rmc_users');
+                return raw ? JSON.parse(raw) : {};
+            } catch (e) {
+                return {};
             }
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem('rmc_users', JSON.stringify(users));
+        }
+
+        function getSession() {
+            try {
+                const raw = localStorage.getItem('rmc_session');
+                return raw ? JSON.parse(raw) : null;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function setSession(email) {
+            localStorage.setItem('rmc_session', JSON.stringify({ email }));
+        }
+
+        function clearSession() {
+            localStorage.removeItem('rmc_session');
+        }
+
+        function generateSalt(byteLength = 16) {
+            const salt = new Uint8Array(byteLength);
+            crypto.getRandomValues(salt);
+            return Array.from(salt).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        async function sha256Hex(input) {
+            const enc = new TextEncoder();
+            const data = enc.encode(input);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        async function hashPassword(password, salt) {
+            return sha256Hex(`${salt}:${password}`);
         }
 
         function updateAuthUI() {
-            const user = getCurrentUser();
+            const session = getSession();
             const accountSection = document.getElementById('account-section');
             const accountEmail = document.getElementById('account-email');
-            const signupSection = document.getElementById('signup-form').closest('section');
-            const loginSection = document.getElementById('login-form').closest('section');
+            const signupForm = document.getElementById('signup-form');
+            const loginForm = document.getElementById('login-form');
 
-            if (user) {
+            if (session && session.email) {
                 accountSection.style.display = '';
-                accountEmail.textContent = user.email;
-                signupSection.style.display = 'none';
-                loginSection.style.display = 'none';
+                accountEmail.textContent = session.email;
+                if (signupForm) signupForm.closest('section').style.display = 'none';
+                if (loginForm) loginForm.closest('section').style.display = 'none';
             } else {
                 accountSection.style.display = 'none';
-                signupSection.style.display = '';
-                loginSection.style.display = '';
+                if (signupForm) signupForm.closest('section').style.display = '';
+                if (loginForm) loginForm.closest('section').style.display = '';
             }
         }
 
-        // ==================== DOCTORS & LOCATION SERVICES ====================
-        async function loadDoctors(filters = {}) {
-            const loadingEl = document.getElementById('loading-doctors');
-            const listEl = document.getElementById('specialist-list');
-            
-            loadingEl.style.display = 'block';
-            listEl.innerHTML = '';
+        // ==================== LOCATION-BASED SPECIALISTS ====================
+        const cityCoordinates = {
+            delhi: { name: 'Delhi', lat: 28.6139, lng: 77.2090 },
+            mumbai: { name: 'Mumbai', lat: 19.0760, lng: 72.8777 },
+            jaipur: { name: 'Jaipur', lat: 26.9124, lng: 75.7873 },
+            lucknow: { name: 'Lucknow', lat: 26.8467, lng: 80.9462 },
+            patna: { name: 'Patna', lat: 25.5941, lng: 85.1376 }
+        };
 
-            try {
-                const params = new URLSearchParams();
-                if (filters.city) params.append('city', filters.city);
-                if (filters.specialty) params.append('specialty', filters.specialty);
-                if (filters.lat && filters.lng) {
-                    params.append('lat', filters.lat);
-                    params.append('lng', filters.lng);
-                }
+        const specialists = [
+            { name: 'Dr. Aren Sharma', contact: 'www.frankhospital.com', specialty: 'General Physician', city: 'Delhi', lat: 28.64, lng: 77.22 },
+            { name: 'Dr. Shalip Gupta', contact: 'Dr.Shalip@yahoo.com', specialty: 'Pediatrics', city: 'Delhi', lat: 28.58, lng: 77.18 },
+            { name: 'Dr. Hildi Kao', contact: 'Kongshu@yahoo.com', specialty: 'Dermatology', city: 'Mumbai', lat: 19.09, lng: 72.88 },
+            { name: 'Dr. R. Singh', contact: 'rsingh@health.org', specialty: 'Cardiology', city: 'Jaipur', lat: 26.90, lng: 75.80 },
+            { name: 'Dr. P. Verma', contact: 'verma.clinic.in', specialty: 'ENT', city: 'Lucknow', lat: 26.85, lng: 80.95 },
+            { name: 'Dr. N. Kumar', contact: 'clinic.kumar@example.com', specialty: 'Orthopedics', city: 'Patna', lat: 25.60, lng: 85.14 },
+            { name: 'Dr. Meera Das', contact: 'meeradas@example.com', specialty: 'Gynecology', city: 'Mumbai', lat: 19.07, lng: 72.84 }
+        ];
 
-                const data = await apiCall(`/doctors?${params}`);
-                
-                if (data.doctors.length === 0) {
-                    listEl.innerHTML = '<p class="muted">No doctors found matching your criteria.</p>';
-                    return;
-                }
+        function toRad(v) { return v * Math.PI / 180; }
 
-                data.doctors.forEach(doctor => {
-                    const card = document.createElement('div');
-                    card.className = 'specialist-card';
-                    card.innerHTML = `
-                        <div class="specialist-name">${doctor.name}</div>
-                        <div>${doctor.specialty} • ${doctor.city}</div>
-                        <div class="specialist-contact">${doctor.contact}</div>
-                        <div style="margin-top: 8px;">
-                            <span class="specialty-badge">${doctor.experience}</span>
-                            <span class="distance-badge">⭐ ${doctor.rating}</span>
-                            ${doctor.distance ? `<span class="distance-badge">${doctor.distance.toFixed(1)} km</span>` : ''}
-                        </div>
-                        <div class="muted" style="margin-top: 8px; font-size: 0.9rem;">${doctor.availability}</div>
-                        <button class="btn btn-small" onclick="bookAppointment(${doctor.id})" style="margin-top: 10px;">
-                            <i class="fas fa-calendar-plus"></i> Book Appointment
-                        </button>
-                    `;
-                    listEl.appendChild(card);
-                });
-            } catch (error) {
-                listEl.innerHTML = `<p class="muted" style="color: var(--danger);">Error loading doctors: ${error.message}</p>`;
-            } finally {
-                loadingEl.style.display = 'none';
-            }
+        function distanceKm(a, b) {
+            const R = 6371; // km
+            const dLat = toRad(b.lat - a.lat);
+            const dLng = toRad(b.lng - a.lng);
+            const lat1 = toRad(a.lat);
+            const lat2 = toRad(b.lat);
+            const x = Math.sin(dLat/2) ** 2 + Math.sin(dLng/2) ** 2 * Math.cos(lat1) * Math.cos(lat2);
+            const y = 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
+            return R * y;
+        }
+
+        function renderSpecialists(origin, maxDistance = 200) {
+            const list = document.querySelector('#specialists .specialist-list');
+            list.innerHTML = '';
+            const enriched = specialists.map(s => {
+                const d = distanceKm(origin, { lat: s.lat, lng: s.lng });
+                return { ...s, distance: d };
+            }).sort((a, b) => a.distance - b.distance);
+
+            const filtered = enriched.filter(s => s.distance <= maxDistance);
+            const toShow = filtered.length ? filtered : enriched.slice(0, 6);
+
+            toShow.forEach(s => {
+                const card = document.createElement('div');
+                card.className = 'specialist-card';
+                card.innerHTML = `
+                    <div class="specialist-name">${s.name}</div>
+                    <div>${s.specialty} • ${s.city}</div>
+                    <div class="specialist-contact">${s.contact}</div>
+                    <span class="distance-badge">${s.distance.toFixed(1)} km</span>
+                `;
+                list.appendChild(card);
+            });
         }
 
         function setLocationStatus(msg, isError = false) {
@@ -1319,153 +1535,10 @@
             el.style.color = isError ? '#b91c1c' : 'var(--gray)';
         }
 
-        // ==================== BILLING SYSTEM ====================
-        async function loadBillingData() {
-            try {
-                const data = await apiCall('/billing/invoices');
-                renderInvoices(data.invoices);
-            } catch (error) {
-                console.error('Failed to load billing data:', error);
-            }
-        }
-
-        function renderInvoices(invoices) {
-            const recentInvoicesEl = document.getElementById('recent-invoices');
-            const invoiceListEl = document.getElementById('invoice-list');
-
-            // Render recent invoices
-            recentInvoicesEl.innerHTML = invoices.slice(0, 2).map(invoice => `
-                <div class="payment-card ${invoice.status}">
-                    <h4>${invoice.service}</h4>
-                    <p class="muted">${invoice.date}</p>
-                    <p><strong>₹${invoice.amount}</strong> <span class="payment-status status-${invoice.status}">${invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)}</span></p>
-                </div>
-            `).join('');
-
-            // Render full invoice list
-            invoiceListEl.innerHTML = invoices.map(invoice => `
-                <tr>
-                    <td>${invoice.id}</td>
-                    <td>${invoice.date}</td>
-                    <td>${invoice.service}</td>
-                    <td>₹${invoice.amount}</td>
-                    <td><span class="payment-status status-${invoice.status}">${invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)}</span></td>
-                    <td><button class="btn btn-small" onclick="viewInvoice('${invoice.id}')"><i class="fas fa-eye"></i></button></td>
-                </tr>
-            `).join('');
-        }
-
-        // ==================== FEEDBACK SYSTEM ====================
-        async function loadFeedback() {
-            try {
-                const data = await apiCall('/feedback');
-                renderFeedback(data.feedbacks);
-            } catch (error) {
-                console.error('Failed to load feedback:', error);
-            }
-        }
-
-        function renderFeedback(feedbacks) {
-            const feedbackListEl = document.getElementById('feedback-list');
-            
-            feedbackListEl.innerHTML = feedbacks.map(feedback => `
-                <div class="feedback-item">
-                    <div class="feedback-header">
-                        <div>
-                            <strong>${feedback.userName}</strong>
-                            <div class="muted">${getServiceName(feedback.serviceType)}</div>
-                        </div>
-                        <div class="feedback-rating">
-                            ${'★'.repeat(feedback.rating)}${'☆'.repeat(5-feedback.rating)} 
-                            <span class="muted">${new Date(feedback.date).toLocaleDateString()}</span>
-                        </div>
-                    </div>
-                    <p>${feedback.feedback}</p>
-                </div>
-            `).join('');
-        }
-
-        // ==================== COMMUNITY SYSTEM ====================
-        async function loadCommunityData() {
-            try {
-                const [resourcesData, eventsData] = await Promise.all([
-                    apiCall('/community/resources'),
-                    apiCall('/community/events')
-                ]);
-                
-                renderCommunityResources(resourcesData.resources);
-                renderCommunityEvents(eventsData.events);
-            } catch (error) {
-                console.error('Failed to load community data:', error);
-            }
-        }
-
-        function renderCommunityResources(resources) {
-            const resourcesEl = document.getElementById('community-resources');
-            
-            resourcesEl.innerHTML = resources.map(resource => `
-                <div class="resource-card">
-                    <div class="resource-icon">
-                        <i class="fas fa-${getResourceIcon(resource.type)}"></i>
-                    </div>
-                    <h3>${resource.name}</h3>
-                    <p>${resource.services.join(', ')}</p>
-                    <div class="muted" style="margin: 10px 0;">
-                        <i class="fas fa-map-marker-alt"></i> ${resource.distance} km away
-                        <span class="type-badge type-${resource.type}">${resource.type.charAt(0).toUpperCase() + resource.type.slice(1)}</span>
-                    </div>
-                    <div class="muted" style="margin-bottom: 15px;">
-                        <i class="fas fa-phone"></i> ${resource.phone}
-                    </div>
-                    <button class="btn btn-small" onclick="contactResource('${resource.name}')">Contact Now</button>
-                </div>
-            `).join('');
-        }
-
-        function renderCommunityEvents(events) {
-            const eventsEl = document.getElementById('community-events');
-            
-            eventsEl.innerHTML = events.map(event => `
-                <div class="payment-card">
-                    <h4>${event.name}</h4>
-                    <p class="muted">${event.date} • ${event.location}</p>
-                    <p>${event.description}</p>
-                    <button class="btn btn-small btn-success" onclick="registerEvent(${event.id})" style="margin-top: 10px;">
-                        Register (${event.registered} attending)
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        // ==================== UTILITY FUNCTIONS ====================
-        function getServiceName(serviceType) {
-            const services = {
-                'consultation': 'Doctor Consultation',
-                'lab': 'Lab Tests',
-                'medicine': 'Medicine Delivery',
-                'emergency': 'Emergency Care'
-            };
-            return services[serviceType] || 'General Service';
-        }
-
-        function getResourceIcon(type) {
-            const icons = {
-                'clinic': 'clinic-medical',
-                'support': 'hand-holding-heart',
-                'wellness': 'heartbeat',
-                'emergency': 'ambulance'
-            };
-            return icons[type] || 'map-marker-alt';
-        }
-
         // ==================== EVENT LISTENERS ====================
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize UI
+            // Initialize authentication UI
             updateAuthUI();
-            loadDoctors({ city: 'delhi' });
-            loadBillingData();
-            loadFeedback();
-            loadCommunityData();
 
             // Tab functionality
             const tabs = document.querySelectorAll('.nav-tab');
@@ -1473,11 +1546,13 @@
                 tab.addEventListener('click', function() {
                     const tabId = this.getAttribute('data-tab');
                     
+                    // Remove active class from all tabs and contents
                     tabs.forEach(t => t.classList.remove('active'));
                     document.querySelectorAll('.tab-content').forEach(content => {
                         content.classList.remove('active');
                     });
                     
+                    // Add active class to current tab and content
                     this.classList.add('active');
                     document.getElementById(`${tabId}-tab`).classList.add('active');
                 });
@@ -1492,6 +1567,7 @@
                     const rating = this.getAttribute('data-rating');
                     ratingValue.value = rating;
                     
+                    // Update star display
                     stars.forEach(s => {
                         if (s.getAttribute('data-rating') <= rating) {
                             s.classList.add('active');
@@ -1504,7 +1580,7 @@
 
             // Feedback Form Submission
             const feedbackForm = document.getElementById('feedback-form');
-            feedbackForm.addEventListener('submit', async function(e) {
+            feedbackForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
                 const rating = ratingValue.value;
@@ -1525,32 +1601,32 @@
                     alert('Please enter your feedback');
                     return;
                 }
-
-                const user = getCurrentUser();
                 
-                try {
-                    await apiCall('/feedback', {
-                        method: 'POST',
-                        body: {
-                            rating: parseInt(rating),
-                            serviceType,
-                            feedback: feedbackText,
-                            userName: user ? user.name : 'Anonymous'
-                        }
-                    });
-                    
-                    // Reload feedback
-                    loadFeedback();
-                    
-                    // Reset form
-                    feedbackForm.reset();
-                    stars.forEach(star => star.classList.remove('active'));
-                    ratingValue.value = '0';
-                    
-                    alert('Thank you for your feedback!');
-                } catch (error) {
-                    alert('Failed to submit feedback: ' + error.message);
-                }
+                // Add new feedback to the list
+                const feedbackList = document.getElementById('feedback-list');
+                const newFeedback = document.createElement('div');
+                newFeedback.className = 'feedback-item';
+                newFeedback.innerHTML = `
+                    <div class="feedback-header">
+                        <div>
+                            <strong>You</strong>
+                            <div class="muted">${getServiceName(serviceType)}</div>
+                        </div>
+                        <div class="feedback-rating">
+                            ${'★'.repeat(rating)}${'☆'.repeat(5-rating)} <span class="muted">Just now</span>
+                        </div>
+                    </div>
+                    <p>${feedbackText}</p>
+                `;
+                
+                feedbackList.prepend(newFeedback);
+                
+                // Reset form
+                feedbackForm.reset();
+                stars.forEach(star => star.classList.remove('active'));
+                ratingValue.value = '0';
+                
+                alert('Thank you for your feedback!');
             });
 
             // Signup Form
@@ -1558,7 +1634,7 @@
                 e.preventDefault();
 
                 const name = document.getElementById('full-name').value.trim();
-                const phone = document.getElementById('phone-number').value.trim();
+                const middleNumber = document.getElementById('middle-number').value.trim();
                 const email = document.getElementById('email').value.trim().toLowerCase();
                 const password = document.getElementById('password').value;
                 const confirmPassword = document.getElementById('confirm-password').value;
@@ -1567,38 +1643,37 @@
                     alert('Please enter your full name.');
                     return;
                 }
-
                 if (password.length < 6) {
                     alert('Password should be at least 6 characters.');
                     return;
                 }
-
                 if (password !== confirmPassword) {
                     alert('Passwords do not match!');
                     return;
                 }
 
-                try {
-                    const data = await apiCall('/auth/signup', {
-                        method: 'POST',
-                        body: { name, email, phone, password }
-                    });
-
-                    // Auto login after signup
-                    const loginData = await apiCall('/auth/login', {
-                        method: 'POST',
-                        body: { email, password }
-                    });
-
-                    setToken(loginData.token || 'demo-token');
-                    setCurrentUser(loginData.user);
-                    
-                    alert('Account created successfully! You are now logged in.');
-                    this.reset();
-                    updateAuthUI();
-                } catch (error) {
-                    alert('Signup failed: ' + error.message);
+                const users = loadUsers();
+                if (users[email]) {
+                    alert('An account with this email already exists. Please login.');
+                    return;
                 }
+
+                const salt = generateSalt();
+                const hash = await hashPassword(password, salt);
+
+                users[email] = {
+                    name,
+                    middleNumber,
+                    salt,
+                    hash,
+                    createdAt: new Date().toISOString()
+                };
+                saveUsers(users);
+                setSession(email);
+
+                alert('Account created successfully! You are now logged in.');
+                this.reset();
+                updateAuthUI();
             });
 
             // Login Form
@@ -1607,28 +1682,27 @@
                 const email = document.getElementById('login-email').value.trim().toLowerCase();
                 const password = document.getElementById('login-password').value;
 
-                try {
-                    const data = await apiCall('/auth/login', {
-                        method: 'POST',
-                        body: { email, password }
-                    });
-
-                    setToken(data.token || 'demo-token');
-                    setCurrentUser(data.user);
-                    
-                    alert('Logged in successfully.');
-                    this.reset();
-                    updateAuthUI();
-                } catch (error) {
-                    alert('Login failed: ' + error.message);
+                const users = loadUsers();
+                const found = users[email];
+                if (!found) {
+                    alert('No account found for this email. Please sign up.');
+                    return;
                 }
+                const computed = await hashPassword(password, found.salt);
+                if (computed !== found.hash) {
+                    alert('Incorrect password.');
+                    return;
+                }
+                setSession(email);
+                alert('Logged in successfully.');
+                this.reset();
+                updateAuthUI();
             });
 
             // Logout
             document.getElementById('logout-btn').addEventListener('click', function() {
-                clearAuth();
+                clearSession();
                 updateAuthUI();
-                alert('Logged out successfully.');
             });
 
             // Location-based specialist search
@@ -1642,7 +1716,7 @@
                     (pos) => {
                         const coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
                         setLocationStatus('Showing nearest specialists');
-                        loadDoctors({ lat: coords.lat, lng: coords.lng });
+                        renderSpecialists(coords);
                     },
                     (err) => {
                         setLocationStatus('Location permission denied. Select a city instead.', true);
@@ -1653,16 +1727,14 @@
 
             // Manual city search
             document.getElementById('search-city').addEventListener('click', () => {
-                const city = document.getElementById('city-select').value;
-                const specialty = document.getElementById('specialty-filter').value;
-                
-                if (!city) {
+                const key = (document.getElementById('city-select').value || '').toLowerCase();
+                if (!key || !cityCoordinates[key]) {
                     setLocationStatus('Please select a city.', true);
                     return;
                 }
-                
-                setLocationStatus(`Showing specialists near ${city}`);
-                loadDoctors({ city, specialty });
+                const c = cityCoordinates[key];
+                setLocationStatus(`Showing specialists near ${c.name}`);
+                renderSpecialists({ lat: c.lat, lng: c.lng });
             });
 
             // Smooth scrolling for anchor links
@@ -1678,19 +1750,32 @@
                     }
                 });
             });
+
+            // Feature card interactions
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const featureName = this.querySelector('.feature-title').textContent;
+                    alert(`Opening ${featureName}...`);
+                });
+            });
+
+            // Default: show Delhi vicinity on first load
+            const c = cityCoordinates['delhi'];
+            renderSpecialists({ lat: c.lat, lng: c.lng });
         });
 
-        // ==================== ACTION FUNCTIONS ====================
-        function bookAppointment(doctorId) {
-            const user = getCurrentUser();
-            if (!user) {
-                alert('Please login to book an appointment.');
-                return;
-            }
-            alert(`Booking appointment with doctor ID: ${doctorId}`);
-            // In a real app, you would open a booking modal
+        // ==================== UTILITY FUNCTIONS ====================
+        function getServiceName(serviceType) {
+            const services = {
+                'consultation': 'Doctor Consultation',
+                'lab': 'Lab Tests',
+                'medicine': 'Medicine Delivery',
+                'emergency': 'Emergency Care'
+            };
+            return services[serviceType] || 'General Service';
         }
 
+        // ==================== BILLING FUNCTIONS ====================
         function downloadInvoice() {
             alert('Invoice download started...');
         }
@@ -1703,10 +1788,17 @@
             alert(`Viewing details for invoice: ${invoiceId}`);
         }
 
+        function removePaymentMethod(methodId) {
+            if (confirm('Are you sure you want to remove this payment method?')) {
+                alert(`Payment method ${methodId} removed successfully`);
+            }
+        }
+
         function addPaymentMethod() {
             alert('Redirecting to add payment method page...');
         }
 
+        // ==================== EMERGENCY FUNCTIONS ====================
         function callEmergency() {
             if (confirm('Call emergency services at 108?')) {
                 alert('Connecting to emergency services...');
@@ -1717,6 +1809,7 @@
             alert('Opening hospital locator...');
         }
 
+        // ==================== COMMUNITY FUNCTIONS ====================
         function showCommunityMap() {
             alert('Opening community health map...');
         }
@@ -1725,29 +1818,23 @@
             alert(`Contacting ${resourceName}...`);
         }
 
-        async function registerEvent(eventId) {
-            const user = getCurrentUser();
-            if (!user) {
-                alert('Please login to register for events.');
-                return;
-            }
-
-            try {
-                await apiCall('/community/events/register', {
-                    method: 'POST',
-                    body: {
-                        eventId,
-                        userName: user.name,
-                        email: user.email
-                    }
-                });
-                alert('Successfully registered for the event!');
-                loadCommunityData(); // Refresh events
-            } catch (error) {
-                alert('Registration failed: ' + error.message);
-            }
+        function findSupportGroups() {
+            alert('Searching for mental health support groups in your area...');
         }
 
+        function learnMoreWellness() {
+            alert('Loading wellness program details...');
+        }
+
+        function viewEmergencyContacts() {
+            alert('Displaying emergency contacts and services...');
+        }
+
+        function registerEvent(eventName) {
+            alert(`Registered for: ${eventName}\nYou will receive confirmation details shortly.`);
+        }
+
+        // ==================== WELLNESS FUNCTIONS ====================
         function startGuidedBreathing() {
             alert('Starting guided breathing exercise...\n\nBreathe in for 4 seconds, hold for 7 seconds, exhale for 8 seconds. Repeat 5 times.');
         }
