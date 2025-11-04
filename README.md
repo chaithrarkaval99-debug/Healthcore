@@ -1,4 +1,4 @@
-# RuralMind Connect 🌱
+# HealthCare 🌱
 
 A modern web application for finding healthcare specialists in rural areas with location-based search and user authentication.
 
