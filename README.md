@@ -3,7 +3,7 @@
 A responsive healthcare platform for finding specialists and mental wellness resources.
 
 ## 🚀 Live Demo
-[View Live Site](https://YOUR_USERNAME.github.io/specialist-finder-app)
+[View Live Site](https://chaithrarkaval99-debug.github.io/Healthcore/)
 
 ## ✨ Features
 - Specialist directory with contact information
