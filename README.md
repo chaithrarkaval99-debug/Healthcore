@@ -1,14 +1,35 @@
 # Specialist Finder Web Application
 
-A responsive web application for finding healthcare specialists and managing mental wellness.
+A responsive healthcare platform for finding specialists and mental wellness resources.
 
-## Features
-- Specialist directory
-- User account creation
+## 🚀 Live Demo
+[View Live Site](https://YOUR_USERNAME.github.io/specialist-finder-app)
+
+## ✨ Features
+- Specialist directory with contact information
+- User account registration
 - Billing and payment history
 - Local community resources
-- Wellness techniques
+- Interactive wellness techniques
+- Fully responsive design
 
-## Live Demo
-Visit: https://YOUR_USERNAME.github.io/specialist-finder-app# Healthcore
-A web application for finding healthcare specialists
+## 🛠️ Built With
+- HTML5
+- CSS3
+- JavaScript
+- GitHub Pages
+
+## 📱 Responsive Design
+Works perfectly on:
+- Desktop computers
+- Tablets
+- Mobile phones
+
+## 🎯 Usage
+1. Browse available specialists
+2. Create an account
+3. Access wellness resources
+4. Find local support groups
+
+## 🔧 Installation
+No installation required! Visit the live site above.
